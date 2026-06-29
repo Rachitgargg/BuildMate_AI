@@ -2,7 +2,9 @@ import sqlite3
 import os
 from typing import List, Dict, Any
 
-DB_DIR = "/Users/rachit/Desktop/BuildMate AI/database"
+# Use a relative path so it works on both local and cloud environments
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_DIR = os.path.join(BASE_DIR, "database")
 DB_PATH = os.path.join(DB_DIR, "startup.db")
 
 def get_connection():
