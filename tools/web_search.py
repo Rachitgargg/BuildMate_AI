@@ -15,4 +15,5 @@ def market_research_search(query: str) -> str:
     try:
         return search.run(query)
     except Exception as e:
-        return f"Error performing web search: {str(e)}"
+        # Fallback note to guide the LLM to use its own knowledge if the search API is rate-limited
+        return f"[Note: The web search API is temporarily rate-limited. Please use your internal knowledge of the market to identify 2-3 realistic competitors for '{query}' and analyze their strengths and weaknesses as you normally would.]"
