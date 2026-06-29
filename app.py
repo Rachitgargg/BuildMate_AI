@@ -780,6 +780,27 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
+    # Co-Founder Persona Selector
+    st.markdown('<div style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: #2d6070; margin-bottom: 6px; letter-spacing: 0.05em; padding: 0 0.5rem;"><i class="ti ti-user"></i> Co-Founder Persona</div>', unsafe_allow_html=True)
+    persona_options = {
+        "Pragmatic Builder": "Lean development, MVP scoping, and budget efficiency.",
+        "Growth Hacker": "Viral marketing, rapid validation, and user acquisition.",
+        "Product Visionary": "User experience, design aesthetics, and product-market fit."
+    }
+    
+    if "co_founder_persona" not in st.session_state:
+        st.session_state.co_founder_persona = "Pragmatic Builder"
+        
+    selected_persona = st.selectbox(
+        "Select Persona",
+        options=list(persona_options.keys()),
+        label_visibility="collapsed",
+        key="co_founder_persona_select"
+    )
+    st.session_state.co_founder_persona = selected_persona
+    
+    st.markdown(f'<div style="font-size: 11px; color: #8fa0b5; line-height: 1.4; margin-top: -4px; margin-bottom: 0.8rem; padding: 6px 8px; background: rgba(6,182,212,0.03); border: 1px solid rgba(6,182,212,0.08); border-radius: 8px; margin-left: 0.5rem; margin-right: 0.5rem;">💡 <em>{persona_options[selected_persona]}</em></div>', unsafe_allow_html=True)
+
     # Display Current Memory State
     st.markdown(f"""
     <div style="padding: 10px 12px; background: rgba(6, 182, 212, 0.03); border: 1px solid rgba(6, 182, 212, 0.08); border-radius: 9px; margin-bottom: 0.8rem;">
@@ -1040,7 +1061,8 @@ if st.session_state.active_tab == "chat":
             
             # Run the multi-step planning agent with a loading status container
             with st.status("🧠 Co-Founder is formulating strategy...", expanded=True) as status:
-                reply, planning_steps = generate_co_founder_response(user_prompt, status_container=status)
+                persona = st.session_state.get("co_founder_persona", "Pragmatic Builder")
+                reply, planning_steps = generate_co_founder_response(user_prompt, status_container=status, persona=persona)
                 status.update(label="✅ Strategy formulated!", state="complete", expanded=False)
             
             # Remove typing indicator

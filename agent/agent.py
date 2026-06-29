@@ -93,10 +93,10 @@ def get_agent_executor(tools: List[Any] = None) -> AgentExecutor:
         handle_parsing_errors=True # Gracefully handle any formatting issues
     )
 
-def generate_co_founder_response(user_input: str, status_container=None) -> tuple[str, list[str]]:
+def generate_co_founder_response(user_input: str, status_container=None, persona: str = "Pragmatic Builder") -> tuple[str, list[str]]:
     """
     Generates a response using the multi-step planning workflow.
     Returns a tuple of (response_text, list_of_planning_steps).
     """
     from agent.planner import run_planning_workflow
-    return run_planning_workflow(user_input, status_container)
+    return run_planning_workflow(user_input, status_container, persona)

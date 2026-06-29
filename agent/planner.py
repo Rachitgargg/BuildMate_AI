@@ -88,7 +88,7 @@ def safe_llm_invoke(llm, messages, temperature: float = 0.2):
         else:
             raise e
 
-def run_planning_workflow(user_input: str, status_container=None) -> Tuple[str, List[str]]:
+def run_planning_workflow(user_input: str, status_container=None, persona: str = "Pragmatic Builder") -> Tuple[str, List[str]]:
     """
     Executes the planner-orchestrated workflow:
     1. Analyze the user's request using a classification LLM call (no tools bound).
@@ -225,6 +225,16 @@ def run_planning_workflow(user_input: str, status_container=None) -> Tuple[str, 
         status_container.write("📅 Creating roadmap & updating database...")
         
     from agent.prompts import COFOUNDER_SYSTEM_PROMPT
+    
+    # Append persona instructions
+    persona_instruction = ""
+    if persona == "Growth Hacker":
+        persona_instruction = "\n\nPERSONALITY: You are a Growth Hacker. Prioritize viral loops, rapid market validation, low-cost user acquisition channels, and creative marketing strategies. Be high-energy, marketing-savvy, and focused on growth metrics."
+    elif persona == "Product Visionary":
+        persona_instruction = "\n\nPERSONALITY: You are a Product Visionary. Prioritize user experience (UX), gorgeous design aesthetics, product-market fit, and customer delight. Be detail-oriented, design-centric, and focused on building a product users love."
+    else: # Pragmatic Builder
+        persona_instruction = "\n\nPERSONALITY: You are a Pragmatic Builder. Prioritize lean engineering, MVP scoping, budget efficiency, and technical feasibility. Be realistic, structured, and focused on getting a working product to market quickly."
+        
     formatted_system_prompt = COFOUNDER_SYSTEM_PROMPT.format(
         startup_name=profile.get("name", "Untitled Startup"),
         startup_idea=profile.get("idea", ""),
@@ -232,7 +242,7 @@ def run_planning_workflow(user_input: str, status_container=None) -> Tuple[str, 
         tech_stack=profile.get("tech_stack", ""),
         estimated_budget=profile.get("estimated_budget", "₹0"),
         currency=profile.get("currency", "INR")
-    )
+    ) + persona_instruction
     
     # Construct message list for final synthesis
     messages: List[BaseMessage] = [
