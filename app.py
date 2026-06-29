@@ -771,16 +771,6 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
-    # Quick Actions Section
-    st.markdown("""
-    <div style="padding: 0 0.5rem; margin-bottom: 0.8rem;">
-        <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: #2d6070; margin-bottom: 8px; letter-spacing: 0.05em;">Quick Actions</div>
-        <a href="#" class="quick-action-btn" onclick="window.exportReport(); return false;"><i class="ti ti-file-export"></i> Export roadmap</a>
-        <a href="#" class="quick-action-btn" onclick="window.shareProject(); return false;"><i class="ti ti-share"></i> Share with team</a>
-        <a href="#" class="quick-action-btn" onclick="window.exportReport(); return false;"><i class="ti ti-download"></i> Download report</a>
-    </div>
-    """, unsafe_allow_html=True)
-
     # Session Info Section
     st.markdown(f"""
     <div style="padding: 0 0.5rem; margin-bottom: 0.8rem;">
@@ -919,9 +909,6 @@ st.markdown(f"""
 <a href="/?action=new_session" target="_self" class="btn-new-session">
 <i class="ti ti-refresh"></i> New session
 </a>
-<a href="#" class="btn-new-session" id="btn-export" onclick="window.exportReport(); return false;">
-<i class="ti ti-share"></i> Export
-</a>
 <div class="status-badge">
 <div class="status-dot"></div>
 CO-FOUNDER ONLINE
@@ -978,136 +965,6 @@ CO-FOUNDER ONLINE
 </div>
 </div>
 """, unsafe_allow_html=True)
-
-# Render Export JS Script as a normal string (with replacement) to avoid f-string brace issues
-export_script = """
-<script>
-    window.exportReport = function() {
-        var startupName = decodeURIComponent("__NAME__");
-        var idea = decodeURIComponent("__IDEA__");
-        var stage = decodeURIComponent("__STAGE__");
-        var budget = decodeURIComponent("__BUDGET__");
-        var techStack = decodeURIComponent("__TECH__");
-        var audience = decodeURIComponent("__AUDIENCE__");
-        var competitors = __COMPETITORS__;
-        var roadmap = __ROADMAP__;
-        var timestamp = new Date().toLocaleString();
-        
-        var html = '<html><head><title>BuildMate AI - Startup Strategy Report</title>' +
-            '<style>' +
-            'body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #ffffff; color: #1e293b; padding: 2rem; line-height: 1.6; }' +
-            '.header { border-bottom: 2px solid #06b6d4; padding-bottom: 1rem; margin-bottom: 2rem; }' +
-            '.title { font-size: 2rem; font-weight: 700; color: #0f172a; }' +
-            '.subtitle { font-size: 1rem; color: #64748b; margin-top: 0.25rem; }' +
-            '.section { margin-bottom: 2rem; }' +
-            '.section-title { font-size: 1.25rem; font-weight: 700; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem; margin-bottom: 1rem; }' +
-            '.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }' +
-            '.card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; background: #f8fafc; margin-bottom: 1rem; }' +
-            '.card-title { font-weight: 700; color: #334155; margin-bottom: 0.5rem; }' +
-            '.timestamp { text-align: right; font-size: 0.8rem; color: #94a3b8; margin-top: 3rem; }' +
-            '</style></head><body>' +
-            '<div class="header">' +
-            '<div class="title">⚡ BuildMate AI - Startup Strategy Report</div>' +
-            '<div class="subtitle">Prepared for ' + startupName + '</div>' +
-            '</div>' +
-            '<div class="section">' +
-            '<div class="section-title">Startup Summary</div>' +
-            '<div class="grid">' +
-            '<div class="card">' +
-            '<div class="card-title">Concept & Vision</div>' +
-            '<div>' + (idea || 'Not specified yet.') + '</div>' +
-            '</div>' +
-            '<div class="card">' +
-            '<div class="card-title">Metadata</div>' +
-            '<div>' +
-            '<strong>Current Stage:</strong> ' + stage + '<br>' +
-            '<strong>Target Audience:</strong> ' + (audience || 'Not specified yet.') + '<br>' +
-            '<strong>Tech Stack:</strong> ' + (techStack || 'Not specified yet.') +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '<div class="section">' +
-            '<div class="section-title">Competitor Analysis</div>' +
-            (competitors.length === 0 ? '<div>No competitor data available.</div>' : competitors.map(function(c) {
-                return '<div class="card">' +
-                    '<div class="card-title">' + c.name + '</div>' +
-                    '<div><strong>Core Strength:</strong> ' + c.strength + '</div>' +
-                    '<div style="margin-top: 0.25rem;"><strong>Weakness/Gap:</strong> ' + c.weakness + '</div>' +
-                    '</div>';
-            }).join('')) +
-            '</div>' +
-            '<div class="section">' +
-            '<div class="section-title">Budget Estimate</div>' +
-            '<div class="card">' +
-            '<div class="card-title">Total Estimated Cost</div>' +
-            '<div style="font-size: 1.5rem; font-weight: 700; color: #06b6d4;">' + budget + '</div>' +
-            '</div>' +
-            '</div>' +
-            '<div class="section">' +
-            '<div class="section-title">Roadmap & Milestones</div>' +
-            (roadmap.length === 0 ? '<div>No roadmap milestones generated yet.</div>' : roadmap.map(function(r, idx) {
-                return '<div style="margin-bottom: 1rem; border-left: 3px solid #06b6d4; padding-left: 1rem;">' +
-                    '<strong>Phase ' + (idx + 1) + ': ' + r.title + '</strong> (' + r.status + ')<br>' +
-                    '<span style="color: #475569;">' + r.desc + '</span>' +
-                    '</div>';
-            }).join('')) +
-            '</div>' +
-            '<div class="section">' +
-            '<div class="section-title">Risk Assessment & Next Actions</div>' +
-            '<div class="grid">' +
-            '<div class="card">' +
-            '<div class="card-title">Potential Risks</div>' +
-            '<div>' +
-            '• Scope creep during MVP development.<br>' +
-            '• Intense competition in the target market.<br>' +
-            '• Localized pricing and wage fluctuations.' +
-            '</div>' +
-            '</div>' +
-            '<div class="card">' +
-            '<div class="card-title">Recommended Next Actions</div>' +
-            '<div>' +
-            '• Conduct user validation interviews.<br>' +
-            '• Finalize the MVP tech stack.<br>' +
-            '• Set up a landing page with a waitlist.' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '<div class="timestamp">Report generated on ' + timestamp + ' via BuildMate AI</div>' +
-            '</body></html>';
-            
-        var blob = new Blob([html], {type: 'text/html'});
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = startupName.toLowerCase().replace(/[^a-z0-9]/g, '_') + '_report.html';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    };
-
-    window.shareProject = function() {
-        var dummy = document.createElement('input');
-        document.body.appendChild(dummy);
-        dummy.value = window.location.href;
-        dummy.select();
-        document.execCommand('copy');
-        document.body.removeChild(dummy);
-        alert('Share link copied to clipboard!');
-    };
-</script>
-""".replace("__NAME__", profile_name_encoded)\
-   .replace("__IDEA__", profile_idea_encoded)\
-   .replace("__STAGE__", profile_stage_encoded)\
-   .replace("__BUDGET__", profile_budget_encoded)\
-   .replace("__TECH__", profile_tech_encoded)\
-   .replace("__AUDIENCE__", profile_audience_encoded)\
-   .replace("__COMPETITORS__", competitors_json)\
-   .replace("__ROADMAP__", roadmap_json)
-
-st.markdown(export_script, unsafe_allow_html=True)
 
 # ==========================================
 # TAB 1: Chat Interface
