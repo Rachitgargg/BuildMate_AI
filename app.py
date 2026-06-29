@@ -397,16 +397,17 @@ st.markdown("""
     .status-dot {
         width: 8px;
         height: 8px;
-        background-color: #06b6d4;
+        background-color: #10b981;
         border-radius: 50%;
-        box-shadow: 0 0 8px #22d3ee;
+        box-shadow: 0 0 8px #10b981;
         animation: pulse 2s infinite;
+        flex-shrink: 0 !important;
     }
 
     @keyframes pulse {
-        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.7); }
-        70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(6, 182, 212, 0); }
-        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+        70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
     }
 
     /* Stats Strip */
