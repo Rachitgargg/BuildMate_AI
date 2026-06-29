@@ -7,6 +7,8 @@ import base64
 from dotenv import load_dotenv
 # Temporary debug block to capture unredacted import errors on Streamlit Cloud
 try:
+    import langchain
+    st.write(f"DEBUG: langchain version is {langchain.__version__} at {langchain.__file__}")
     from agent.agent import generate_co_founder_response
 except Exception as e:
     import traceback
