@@ -2,8 +2,7 @@ import os
 from typing import List, Dict, Any
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.agents.agent import AgentExecutor
-from langchain.agents.tool_calling_agent.base import create_tool_calling_agent
+from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import HumanMessage, AIMessage, BaseMessage
 from agent.prompts import COFOUNDER_SYSTEM_PROMPT
