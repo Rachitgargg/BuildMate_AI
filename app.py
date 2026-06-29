@@ -5,7 +5,14 @@ import json
 import urllib.parse
 import base64
 from dotenv import load_dotenv
-from agent.agent import generate_co_founder_response
+# Temporary debug block to capture unredacted import errors on Streamlit Cloud
+try:
+    from agent.agent import generate_co_founder_response
+except Exception as e:
+    import traceback
+    st.error("🚨 **Import Error Detected!** Here is the unredacted traceback:")
+    st.code(traceback.format_exc())
+    st.stop()
 import memory.sqlite_memory as db
 
 # Load environment variables
