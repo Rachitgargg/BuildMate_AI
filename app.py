@@ -207,11 +207,16 @@ st.markdown("""
         overflow-y: auto !important;
     }
 
+    /* Eliminate empty space at the top of the sidebar */
+    div[data-testid="stSidebarHeader"] {
+        display: none !important;
+    }
+
     [data-testid="stSidebarUserContent"] {
         display: flex !important;
         flex-direction: column !important;
-        min-height: calc(100vh - 2rem) !important;
-        padding-top: 1rem !important;
+        min-height: 100vh !important;
+        padding-top: 0px !important;
         padding-bottom: 1rem !important;
         gap: 0.6rem !important;
     }
