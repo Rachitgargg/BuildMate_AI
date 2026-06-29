@@ -1061,8 +1061,13 @@ if st.session_state.active_tab == "chat":
             
             # Run the multi-step planning agent with a loading status container
             with st.status("🧠 Co-Founder is formulating strategy...", expanded=True) as status:
+                import importlib
+                import agent.planner
+                import agent.agent
+                importlib.reload(agent.planner)
+                importlib.reload(agent.agent)
                 persona = st.session_state.get("co_founder_persona", "Pragmatic Builder")
-                reply, planning_steps = generate_co_founder_response(user_prompt, status_container=status, persona=persona)
+                reply, planning_steps = agent.agent.generate_co_founder_response(user_prompt, status_container=status, persona=persona)
                 status.update(label="✅ Strategy formulated!", state="complete", expanded=False)
             
             # Remove typing indicator
