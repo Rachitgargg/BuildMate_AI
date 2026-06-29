@@ -166,6 +166,13 @@ st.markdown("""
         color: #bfdbfe;
     }
 
+    /* Remove default Streamlit top padding and margins */
+    .block-container {
+        padding-top: 1.5rem !important;
+        padding-bottom: 2rem !important;
+        max-width: 1200px !important;
+    }
+
     html, body, [class*="css"] {
         font-family: 'Space Grotesk', sans-serif;
     }
@@ -816,7 +823,6 @@ with st.sidebar:
         })();
     </script>
     """.replace("__START_TIME__", str(int(st.session_state.start_time * 1000)))
-    st.markdown(timer_js, unsafe_allow_html=True)
 
     # User Profile Row (placed inside a div that will be pushed to bottom via CSS)
     st.markdown("""
@@ -831,6 +837,9 @@ with st.sidebar:
         </div>
     </div>
     """, unsafe_allow_html=True)
+
+# Render the timer JS in the main area so it is not stripped by Streamlit's sidebar parser
+st.markdown(timer_js, unsafe_allow_html=True)
 
 
 
