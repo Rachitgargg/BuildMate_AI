@@ -1,0 +1,21 @@
+# Environment variables
+.env
+
+# SQLite databases
+*.db
+database/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS/IDE files
+.DS_Store
+Thumbs.db
+.agents/
+.gemini/
