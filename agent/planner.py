@@ -235,6 +235,9 @@ def run_planning_workflow(user_input: str, status_container=None, persona: str =
     else: # Pragmatic Builder
         persona_instruction = "\n\nPERSONALITY: You are a Pragmatic Builder. Prioritize lean engineering, MVP scoping, budget efficiency, and technical feasibility. Be realistic, structured, and focused on getting a working product to market quickly."
         
+    # Synthesis instruction to prevent the LLM from attempting to run tools or output tool_code
+    synthesis_instruction = "\n\nINSTRUCTION: The planning system has already executed the necessary tools (Web Search and/or Cost Calculator) and appended their outputs to the user's message below. Do NOT attempt to execute any tools, call any functions, or output any code (like 'tool_code'). Your sole task is to synthesize the provided tool outputs and write your final co-founder response inside the 'response_text' JSON field."
+
     formatted_system_prompt = COFOUNDER_SYSTEM_PROMPT.format(
         startup_name=profile.get("name", "Untitled Startup"),
         startup_idea=profile.get("idea", ""),
@@ -242,7 +245,7 @@ def run_planning_workflow(user_input: str, status_container=None, persona: str =
         tech_stack=profile.get("tech_stack", ""),
         estimated_budget=profile.get("estimated_budget", "₹0"),
         currency=profile.get("currency", "INR")
-    ) + persona_instruction
+    ) + persona_instruction + synthesis_instruction
     
     # Construct message list for final synthesis
     messages: List[BaseMessage] = [
