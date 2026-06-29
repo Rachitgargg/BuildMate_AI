@@ -211,6 +211,9 @@ st.markdown("""
     div[data-testid="stSidebarHeader"] {
         display: none !important;
     }
+    div[data-testid="stSidebarContent"] {
+        padding-top: 0px !important;
+    }
 
     [data-testid="stSidebarUserContent"] {
         display: flex !important;
@@ -789,10 +792,6 @@ with st.sidebar:
         <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: #2d6070; margin-bottom: 8px; letter-spacing: 0.05em;">Current Session</div>
         <div style="background: rgba(6, 182, 212, 0.04); border: 1px solid rgba(6, 182, 212, 0.08); border-radius: 10px; padding: 10px 12px; font-size: 0.8rem; color: #8fa0b5; line-height: 1.6;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                <span>Session duration</span>
-                <span id="session-timer" style="color: #22d3ee; font-weight: 600;">0m 0s</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
                 <span>Interactions</span>
                 <span style="color: #22d3ee; font-weight: 600;">{user_messages_count}</span>
             </div>
@@ -808,27 +807,6 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
-    # Render the timer JS in a separate non-f-string markdown block, replacing __START_TIME__
-    timer_js = """
-    <script>
-        (function() {
-            var startTime = __START_TIME__;
-            function updateTimer() {
-                var now = Date.now();
-                var diff = now - startTime;
-                var mins = Math.floor(diff / 60000);
-                var secs = Math.floor((diff % 60000) / 1000);
-                var timerEl = document.getElementById("session-timer");
-                if (timerEl) {
-                    timerEl.innerText = mins + "m " + secs + "s";
-                }
-            }
-            setInterval(updateTimer, 1000);
-            updateTimer();
-        })();
-    </script>
-    """.replace("__START_TIME__", str(int(st.session_state.start_time * 1000)))
-
     # User Profile Row (placed inside a div that will be pushed to bottom via CSS)
     st.markdown("""
     <div class="sidebar-footer" style="width: 100%;">
@@ -842,9 +820,6 @@ with st.sidebar:
         </div>
     </div>
     """, unsafe_allow_html=True)
-
-# Render the timer JS in the main area so it is not stripped by Streamlit's sidebar parser
-st.markdown(timer_js, unsafe_allow_html=True)
 
 
 
