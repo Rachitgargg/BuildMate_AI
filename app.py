@@ -208,11 +208,20 @@ st.markdown("""
     }
 
     /* Eliminate empty space at the top of the sidebar */
-    div[data-testid="stSidebarHeader"] {
+    div[data-testid="stSidebarHeader"],
+    [data-testid="stSidebarHeader"] {
         display: none !important;
+        height: 0px !important;
+        min-height: 0px !important;
+        padding: 0px !important;
+        margin: 0px !important;
     }
-    div[data-testid="stSidebarContent"] {
+
+    div[data-testid="stSidebarContent"],
+    [data-testid="stSidebarContent"],
+    .stSidebar > div {
         padding-top: 0px !important;
+        margin-top: 0px !important;
     }
 
     [data-testid="stSidebarUserContent"] {
